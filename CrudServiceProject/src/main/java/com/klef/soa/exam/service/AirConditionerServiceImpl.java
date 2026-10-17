@@ -1,20 +1,19 @@
+
 package com.klef.soa.exam.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.klef.soa.exam.entity.AirConditionerServiceEntity;
 import com.klef.soa.exam.repository.AirConditionerServiceRepository;
 
-import org.springframework.stereotype.Service;
-import java.util.List;
-
 @Service
-public class AirConditionerServiceImpl
-        implements AirConditionerService {
+public class AirConditionerServiceImpl implements AirConditionerService {
 
-    private final AirConditionerServiceRepository repository;
-
-    public AirConditionerServiceImpl(AirConditionerServiceRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private AirConditionerServiceRepository repository;
 
     @Override
     public AirConditionerServiceEntity add(
@@ -25,18 +24,18 @@ public class AirConditionerServiceImpl
     }
 
     @Override
-    public List<AirConditionerServiceEntity> getAll() {
+    public List<AirConditionerServiceEntity> displayAll() {
         return repository.findAll();
     }
 
     @Override
     public boolean deleteById(Long id) {
 
-        if (!repository.existsById(id)) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
+        } else {
             return false;
         }
-
-        repository.deleteById(id);
-        return true;
     }
 }
